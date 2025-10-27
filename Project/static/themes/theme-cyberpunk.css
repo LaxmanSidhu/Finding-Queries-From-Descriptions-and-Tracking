@@ -1,8 +1,8 @@
 /* Cyberpunk Theme Variables */
 :root {
-    --bg: #0f0f1a;
-    --panel: #1a1a2e;
-    --panel-alt: #2a2a40;
+    --bg: #11111c;
+    --panel: #8f8fc2;
+    --panel-alt: #a2a2ce;
 
     --text: #e600ff;
     --muted: #9b00ff;
@@ -17,7 +17,7 @@
 
     --border: #6600cc;
 
-    --shadow: rgba(255, 0, 255, 0.08);
+    --shadow: rgba(235, 93, 235, 0.503);
     --shadow-strong: rgba(255, 0, 255, 0.18);
 
     --progress-track: #330033;
