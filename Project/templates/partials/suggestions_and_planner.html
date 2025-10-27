@@ -1,0 +1,161 @@
+<!-- Suggestions Section -->
+<div class="suggestions">
+    <h3>Suggestions for: <em>{{ selected_title }}</em></h3>
+
+    <div class="buttons">
+        <button type="button" class="btn ghost" data-target="one_word">Single Words</button>
+        <button type="button" class="btn ghost" data-target="two_word">Two Words</button>
+        <button type="button" class="btn ghost" data-target="three_word">Three Words</button>
+        <button type="button" class="btn ghost" data-target="one_word_podcasts">Single Word + Podcasts</button>
+        <button type="button" class="btn ghost" data-target="two_word_podcasts">Two Words + Podcasts</button>
+        <button type="button" class="btn ghost" data-target="three_word_podcasts">Three Words + Podcasts</button>
+    </div>
+
+    <hr class="divider">
+
+    <!-- One-word Cards -->
+    <div id="one_word" class="cards hidden">
+        {% if one_word %}
+            {% for word in one_word %}
+            {% set clean_word = word|string|replace("'", "")|replace('"', "")|replace("[", "")|replace("]", "")|trim %}
+            <div class="card {% if clean_word in red_one_word %}highlight-red{% elif clean_word in yellow_one_word %}highlight-yellow{% endif %}">
+                {{ clean_word }}
+                <button class="add-query-btn" type="button" title="Add to queries">➕</button>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="no-queries-message">
+                <p>No queries to display</p>
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- Two-word Cards -->
+    <div id="two_word" class="cards hidden">
+        {% if two_word %}
+            {% for word in two_word %}
+            {% set clean_word = word|string|replace("'", "")|replace('"', "")|replace("[", "")|replace("]", "")|trim %}
+            <div class="card {% if clean_word in red_two_word %}highlight-red{% elif clean_word in yellow_two_word %}highlight-yellow{% endif %}">
+                {{ clean_word }}
+                <button class="add-query-btn" type="button" title="Add to queries">➕</button>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="no-queries-message">
+                <p>No queries to display</p>
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- Three-word Cards -->
+    <div id="three_word" class="cards hidden">
+        {% if three_word %}
+            {% for word in three_word %}
+            {% set clean_word = word|string|replace("'", "")|replace('"', "")|replace("[", "")|replace("]", "")|trim %}
+            <div class="card {% if clean_word in red_three_word %}highlight-red{% elif clean_word in yellow_three_word %}highlight-yellow{% endif %}">
+                {{ clean_word }}
+                <button class="add-query-btn" type="button" title="Add to queries">➕</button>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="no-queries-message">
+                <p>No queries to display</p>
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- One-word + Podcasts Cards -->
+    <div id="one_word_podcasts" class="cards hidden">
+        {% if one_word_podcasts %}
+            {% for word in one_word_podcasts %}
+            {% set clean_word = word|string|replace("'", "")|replace('"', "")|replace("[", "")|replace("]", "")|trim %}
+            {% set base_word = clean_word.rsplit(' ', 1)[0] %}
+            <div class="card {% if base_word in red_one_word %}highlight-red{% elif base_word in yellow_one_word %}highlight-yellow{% endif %}">
+                {{ clean_word }}
+                <button class="add-query-btn" type="button" title="Add to queries">➕</button>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="no-queries-message">
+                <p>No queries to display</p>
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- Two-word + Podcasts Cards -->
+    <div id="two_word_podcasts" class="cards hidden">
+        {% if two_word_podcasts %}
+            {% for word in two_word_podcasts %}
+            {% set clean_word = word|string|replace("'", "")|replace('"', "")|replace("[", "")|replace("]", "")|trim %}
+            {% set base_word = clean_word.rsplit(' ', 1)[0] %}
+            <div class="card {% if base_word in red_two_word %}highlight-red{% elif base_word in yellow_two_word %}highlight-yellow{% endif %}">
+                {{ clean_word }}
+                <button class="add-query-btn" type="button" title="Add to queries">➕</button>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="no-queries-message">
+                <p>No queries to display</p>
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- Three-word + Podcasts Cards -->
+    <div id="three_word_podcasts" class="cards hidden">
+        {% if three_word_podcasts %}
+            {% for word in three_word_podcasts %}
+            {% set clean_word = word|string|replace("'", "")|replace('"', "")|replace("[", "")|replace("]", "")|trim %}
+            {% set base_word = clean_word.rsplit(' ', 1)[0] %}
+            <div class="card {% if base_word in red_three_word %}highlight-red{% elif base_word in yellow_three_word %}highlight-yellow{% endif %}">
+                {{ clean_word }}
+                <button class="add-query-btn" type="button" title="Add to queries">➕</button>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="no-queries-message">
+                <p>No queries to display</p>
+            </div>
+        {% endif %}
+    </div>
+
+    <p class="note">
+        Note: If you see Red cards, those already have lists in Feedspot. <br>
+        Yellow cards are similar intent keywords that might have results in Feedspot.
+    </p>
+</div>
+
+<br>
+<center><button id="showPlannerBtn" class="btn">Click for Keyword Planner</button></center>
+
+<!-- Keyword Planner Section -->
+<div id="keyword_planner_section_wrapper">
+    <div id="keyword_planner_section">
+        <div id="plannerOutputs">
+            <div class="planner-card">
+                <h3>🎯 One-Word Podcast Queries</h3>
+                <button class="copy-btn" type="button" aria-label="Copy one-word keywords"
+                        data-copy-target="one-word-text">📋</button>
+                <hr class="divider planner-divider">
+                <p id="one-word-text">{% if one_word_podcast_text and one_word_podcast_text.strip() %}{{ one_word_podcast_text }}{% else %}<span class="no-queries-message">No queries to display</span>{% endif %}</p>
+            </div>
+
+            <div class="planner-card">
+                <h3>🎯 Two-Word Podcast Queries</h3>
+                <button class="copy-btn" type="button" aria-label="Copy two-word keywords"
+                        data-copy-target="two-word-text">📋</button>
+                <hr class="divider planner-divider">
+                <p id="two-word-text">{% if two_word_podcast_text and two_word_podcast_text.strip() %}{{ two_word_podcast_text }}{% else %}<span class="no-queries-message">No queries to display</span>{% endif %}</p>
+            </div>
+
+            <div class="planner-card">
+                <h3>🎯 Three-Word Podcast Queries</h3>
+                <button class="copy-btn" type="button" aria-label="Copy three-word keywords"
+                        data-copy-target="three-word-text">📋</button>
+                <hr class="divider planner-divider">
+                <p id="three-word-text">{% if three_word_podcast_text and three_word_podcast_text.strip() %}{{ three_word_podcast_text }}{% else %}<span class="no-queries-message">No queries to display</span>{% endif %}</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+

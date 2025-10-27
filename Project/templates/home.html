@@ -1,0 +1,147 @@
+{% extends "base.html" %}
+{% block title %}Home - Podcast Query Generator{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="home_container">
+    <div class="upload-section">
+        <h2>Upload Podcast CSV</h2>
+
+        {% if message %}
+        <div class="flash-message {{ 'success' if 'success' in message.lower() else 'error' }}">
+            <i class="fas {{ 'fa-check-circle' if 'success' in message.lower() else 'fa-exclamation-circle' }}"></i>
+            {{ message }}
+        </div>
+        {% endif %}
+
+        <form method="POST" enctype="multipart/form-data" class="upload-form">
+            <div class="file-input-wrapper">
+                <input type="file" name="file" accept=".csv" required id="csvFileInput">
+                <label for="csvFileInput" class="file-input-label">
+                    <i class="fas fa-upload"></i>
+                    <span class="file-text">Choose CSV File</span>
+                </label>
+            </div>
+            <button type="submit" class="btn primary upload-btn">
+                <i class="fas fa-upload"></i>
+                Upload File
+            </button>
+        </form>
+
+        {% if filename %}
+        <div class="file-info">
+            <div class="file-name">
+                <i class="fas fa-file-csv"></i>
+                <span class="filename-text">{{ filename }}</span>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    {% if rows %}
+    <div class="csv-info-section">
+        <div class="csv-header">
+            <h3><i class="fas fa-database"></i> CSV Information</h3>
+        </div>
+        
+        <div class="csv-stats">
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-list-ol"></i>
+                </div>
+                <div class="stat-content">
+                    <div class="stat-number">{{ rows }}</div>
+                    <div class="stat-label">Total Rows</div>
+                </div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-columns"></i>
+                </div>
+                <div class="stat-content">
+                    <div class="stat-number">{{ cols }}</div>
+                    <div class="stat-label">Total Columns</div>
+                </div>
+            </div>
+        </div>
+
+        {% if all_columns %}
+        <div class="columns-info">
+            <h4><i class="fas fa-list"></i> All Columns in CSV</h4>
+            
+            <!-- Columns Displayed -->
+            <div class="columns-section">
+                <h5 class="section-title">
+                    <i class="fas fa-eye"></i> Columns Displayed
+                </h5>
+                <div class="columns-grid">
+                    {% for column in all_columns %}
+                        {% if column in displayed_columns %}
+                        <div class="column-item displayed">
+                            <i class="fas fa-check-circle"></i>
+                            <span>{{ column }}</span>
+                            <span class="badge badge-success">Visible</span>
+                        </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Columns Not Displayed -->
+            <div class="columns-section">
+                <h5 class="section-title">
+                    <i class="fas fa-eye-slash"></i> Columns Not Displayed
+                </h5>
+                <div class="columns-grid">
+                    {% for column in all_columns %}
+                        {% if column not in displayed_columns %}
+                        <div class="column-item hidden">
+                            <i class="fas fa-circle"></i>
+                            <span>{{ column }}</span>
+                            <span class="badge badge-hidden">Hidden</span>
+                        </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    <div class="table-section">
+        <div class="table-header">
+            <h3><i class="fas fa-table"></i> Data Preview</h3>
+            <p class="table-description">Showing key columns for data verification</p>
+        </div>
+        
+        <!-- Check if table HTML exists and display it -->
+        {% if table %}
+        <div id="csvTableContainer" class="table-wrapper">
+            {{ table | safe }}
+        </div>
+        {% else %}
+        <!-- Empty table placeholder for JS DataTable to initialize -->
+        <div class="table-wrapper">
+            <table id="csvTable" class="display full-width"></table>
+        </div>
+        {% endif %}
+    </div>
+
+    <div class="action-section">
+        <a href="{{ url_for('results') }}" class="btn primary large">
+            <i class="fas fa-play"></i>
+            Start Tracking Queries
+        </a>
+    </div>
+    {% endif %}
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='javascripts/home.js') }}"></script>
+{% endblock %}
